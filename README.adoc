@@ -38,7 +38,7 @@ image:https://travis-ci.org/2sin18/hactar.png?branch=master["Build Status", link
 
 *Hactar* is still at a very early development stage. For now, we focus on developing base components. 
 
-You are welcomed to contribute using Github https://github.com/2sin18/hactar/issues[Issues] and https://github.com/2sin18/hactar/pulls[Pull Requests]. Also, please feel free to ask questions in stackoverflow.com/tags/hactar[StackOverflow].
+You are welcomed to contribute using Github https://github.com/2sin18/hactar/issues[Issues] and https://github.com/2sin18/hactar/pulls[Pull Requests]. Also, please feel free to ask questions in http://stackoverflow.com/tags/hactar[StackOverflow].
 
 After you clone the code, below commands can give helps:
 
