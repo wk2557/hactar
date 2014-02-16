@@ -1,0 +1,16 @@
+language: cpp
+compiler:
+  - clang
+  - gcc
+branches:
+  only:
+    - master
+before_install:
+  - mkdir -p m4
+  - autoreconf --force --install
+notifications:
+  recipients:
+    - sam.yuen@foxmail.com
+  email:
+    on_success: change
+    on_failure: always

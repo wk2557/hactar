@@ -1,0 +1,19 @@
+= `base` module
+:doctype: article
+
+This module includes the `instance` class and its corresponding smart pointer `const_ptr` class, with various *wrapers*.
+
+The *Hactar* world consists of immutable objects and state transfers. We use 
+*const_ptr* to model an immutable state of a mutable object that could be 
+transfered into other state with side effects. This way, benefits brought 
+by immutability could be maximized. We call a functor that wraps state 
+transfer a *wraper*. To make it easier to understand, you can imagine a 
+*const_ptr* is a generalized status code, and a *wraper* is a generalized 
+bitwise operation.
+
+These classes are the base components of *Hactar*, all other stuff is built on
+them.
+
+A quick example could be found in the link:base_test.cc[module test].
+
+For class-specific documents, you could see comments in header files.
