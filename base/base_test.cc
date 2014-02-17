@@ -240,7 +240,7 @@ int
 hactar::base_test(int argc, const char* argv[])
 {
 	unit<calc> (3.14) &
-	(wrap(multiply, 2.0) | wrap(add, 2.0)) & (wrap(add, 10.0) * 4) &
+	(wrap(multiply, 2.0) | wrap(add, 2.0)) & loop(wrap(add, 10.0), 4) &
 	(wrap(add, 2.5) & wrap(multiply, 1.1) & wrap(add, 2.2)) &
 	mplus(wrap(multiply, 2.4)) & mclean();
 	

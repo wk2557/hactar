@@ -23,8 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////
 = `base/loop_action.hh`
 
-This file consists of class template <<loop>> and class template 
-<<action with loop_action_tag>>.
+This file consists of class template <<action with loop_action_tag>>.
 ////////////////////////////////////////////////////////////////////////////////
 */
 
@@ -37,48 +36,11 @@ This file consists of class template <<loop>> and class template
 namespace hactar {
 /*
 ////////////////////////////////////////////////////////////////////////////////
-== [[loop]] class template `loop`
-
-Class template `loop` consists of loop count and loop filter action. Loop count
-is the maximum times a loop could take. Loop filter is an action that returns 
-true if the loop could continue.
-////////////////////////////////////////////////////////////////////////////////
-*/
-template<class IN, class TAGF>
-class loop
-{
-unsigned int _count;
-action<bool, IN, TAGF> _filter;
-
-public:
-loop(const int& count1, const action<bool, IN, TAGF>& filter1)
-	: _count(count1)
-	, _filter(filter1)
-{
-}
-
-int
-count() const
-{
-	return _count;
-}
-
-action<bool, IN, TAGF>
-filter() const
-{
-	return _filter;
-}
-
-};
-
-/*
-////////////////////////////////////////////////////////////////////////////////
 == [[action with loop_action_tag]] action with loop_action_tag
 
-A loop action is used for looping through actions. A loop action consists of 
-loop count and loop filter action, and could be constructed by an action 
-`IN -> IN` and an `loop` object with `operator*`. An action `IN -> IN` and a 
-loop count value could construct a loop action with `operator*` too.
+A loop action is used for looping through actions. A loop action could be 
+constructed by an action `IN -> IN`, the loop count, and optionally, a loop 
+filter action.
 
 In each loop iteration, the internal action `IN -> IN` would take the output of 
 last iteration as input.
@@ -89,8 +51,8 @@ Below is an example:
 double add(const double& x, double y) { return x + y; }
 bool is_small(const double& x) { return x < 100.0; }
 
-wrap(add, 10.0) * loop(10, wrap(is_small)); // => loop action
-wrap(add, 10.0) * 10; // => loop action
+loop(wrap(add, 10.0), 10, wrap(is_small)); // => loop action
+loop(wrap(add, 10.0), 10); // => loop action
 --------------------------------------------------------------------------------
 ////////////////////////////////////////////////////////////////////////////////
 */
@@ -105,8 +67,8 @@ unsigned int _count;
 action<bool, IN, TAGF> _filter;
 
 public:
-action(const action<IN, IN, TAG>& f1,
-	const int& count1, const action<bool, IN, TAGF>& filter1)
+action(const action<IN, IN, TAG>& f1, const unsigned int& count1, 
+	const action<bool, IN, TAGF>& filter1)
 	: _f(f1)
 	, _count(count1)
 	, _filter(filter1)
@@ -128,31 +90,15 @@ operator()(const IN& in1) const
 
 template<class IN, class TAG, class TAGF>
 action<IN, IN, loop_action_tag<TAG, TAGF> >
-operator*(const action<IN, IN, TAG>& f1, const loop<IN, TAGF>& loop1)
+loop(const action<IN, IN, TAG>& f1, const unsigned int& count1, 
+	const action<bool, IN, TAGF>& filter1)
 {
-	return action<IN, IN, loop_action_tag<TAG, TAGF> > (f1,
-		loop1.count(), loop1.filter());
-}
-
-template<class IN, class TAG, class TAGF>
-action<IN, IN, loop_action_tag<TAG, TAGF> >
-operator*(const loop<IN, TAGF>& loop1, const action<IN, IN, TAG>& f1)
-{
-	return action<IN, IN, loop_action_tag<TAG, TAGF> > (f1,
-		loop1.count(), loop1.filter());
+	return action<IN, IN, loop_action_tag<TAG, TAGF> > (f1, count1, filter1);
 }
 
 template<class IN, class TAG>
 action<IN, IN, loop_action_tag<TAG, true_action_tag> >
-operator*(const action<IN, IN, TAG>& f1, const unsigned int& count1)
-{
-	return action<IN, IN, loop_action_tag<TAG, true_action_tag> > (f1,
-		count1, action<bool, IN, true_action_tag> ());
-}
-
-template<class IN, class TAG>
-action<IN, IN, loop_action_tag<TAG, true_action_tag> >
-operator*(const unsigned int& count1, const action<IN, IN, TAG>& f1)
+loop(const action<IN, IN, TAG>& f1, const unsigned int& count1)
 {
 	return action<IN, IN, loop_action_tag<TAG, true_action_tag> > (f1,
 		count1, action<bool, IN, true_action_tag> ());

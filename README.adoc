@@ -11,7 +11,7 @@ The following is a quick example of *Hactar* used for simulating a calculator:
 
 --------------------------------------------------------------------------------
 unit<calc> (3.14) &
-(wrap(multiply, 2.0) | wrap(add, 2.0)) & (wrap(add, 10.0) * 4) &
+(wrap(multiply, 2.0) | wrap(add, 2.0)) & loop(wrap(add, 10.0), 4) &
 (wrap(add, 2.5) & wrap(multiply, 1.1) & wrap(add, 2.2)) &
 mplus(wrap(multiply, 2.4)) & mclean();
 --------------------------------------------------------------------------------
@@ -24,9 +24,9 @@ In the above example code:
 * `wrap` functions wrap raw functions into pure actions.
 * `mplus` and `mclean` are actions supposed to have side-effects, and side-effects are defined in the overloaded `operator&` functions. 
 * Actions could be combined into one for lazy evaluation by `operator&`. 
-* Branching and looping are implemented by `operator|` and `operator*`.
+* Branching and looping are implemented by `operator|` and function `loop`.
 
-For more details, you can find them in the link:base/base_test.cc[base module test]. 
+For more detail, you can find them in the link:base/base_test.cc[base module test]. 
 
 For class-specific documents, you could see comments in every header file.
 
